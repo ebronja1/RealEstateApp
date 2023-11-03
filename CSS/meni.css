@@ -1,0 +1,12 @@
+#meni {
+    position: fixed;
+}
+#meni li{
+    display: inline-block;
+}
+#meni li:hover > a{
+    color: #ff9900;
+}
+body {
+    background-color: #fdf1d3;
+}
