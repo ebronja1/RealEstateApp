@@ -1,0 +1,36 @@
+img {
+    max-width: 95%;
+    max-height: 25%;
+    margin: auto;
+}
+p {
+    display: inline-block;
+    margin: 0;
+  }
+td[colspan="2"] p {
+    display: inline;
+    margin: 0;
+  }
+ .paragLijevi {
+    font-weight: bold;
+}
+body {
+    background-color: #fdf1d3;
+}
+ul {
+    padding: 0;
+}
+.naslovcic {
+    font-weight: bold;
+}
+li {
+    background-color: white;
+    list-style-type: none;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 0;
+    border: 1px solid #000;
+}
+table {
+    width: 100%;
+}
