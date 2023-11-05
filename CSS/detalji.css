@@ -1,36 +1,46 @@
 img {
-    max-width: 95%;
+    max-width: 100%;
     max-height: 25%;
-    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 p {
     display: inline-block;
-    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 td[colspan="2"] p {
     display: inline;
-    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
  .paragLijevi {
     font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 body {
     background-color: #fdf1d3;
+    padding: 15px;
 }
 ul {
     padding: 0;
 }
 .naslovcic {
     font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 li {
     background-color: white;
     list-style-type: none;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    padding: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
     border: 1px solid #000;
 }
 table {
     width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
