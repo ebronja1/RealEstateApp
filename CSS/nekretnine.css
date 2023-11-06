@@ -1,0 +1,49 @@
+img {
+    margin: 10px;
+    width: 250px;
+    height: 100px;
+}
+.grid-container {
+    display: grid;
+    background-color: blanchedalmond;
+    gap: 20px 20px;
+    margin: 20px;
+    padding: 10px;
+    grid-template-columns: repeat(auto-fill, 300px);
+  }
+  .grid-item-stan {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    min-width: 300px;
+    max-width: 300px;
+}
+.grid-item-kuca {
+    background-color: powderblue;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    min-inline-size: 300px;
+}
+.grid-item-PProstor {
+    background-color: green;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    min-inline-size: 300px;
+}
+.lijeviPodaci p{
+    display: inline-block;
+}
+.desniPodaci {
+    text-align: right;
+}
+.paragrafiDesni {
+    display: inline-block;
+    text-align: left;
+}
+.dugme {
+    position: relative;
+    left: 50%;
+    width: 70px;
+    height: 25px;
+    margin-top: 25px;
+}
