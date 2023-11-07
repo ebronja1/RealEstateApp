@@ -1,5 +1,11 @@
 #meni {
     position: fixed;
+    width: 100%;
+    border: #ff9900;
+    margin-top: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    
 }
 #meni li{
     display: inline-block;
@@ -10,3 +16,4 @@
 body {
     background-color: #fdf1d3;
 }
+

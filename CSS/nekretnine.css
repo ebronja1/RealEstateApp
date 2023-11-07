@@ -42,8 +42,22 @@ img {
 }
 .dugme {
     position: relative;
-    left: 50%;
+    left: 40%;
     width: 70px;
     height: 25px;
     margin-top: 25px;
+}
+body {
+    background-color: #fdf1d3;
+}
+iframe {
+    position: fixed;
+    height: 50px; 
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-top: 3px black;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 100;
 }
