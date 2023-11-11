@@ -1,17 +1,18 @@
-img {
-    height: 50px;
-    width: 50px;
-    margin-left: 0;
-    margin-right: 200px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
+@media only screen and (max-width: 500px) {
+    .form-container img {
+        height: 50px;
+        width: 50px;
+        margin-left: 0;
+        margin-right: 200px;
+        margin-top: 50px;
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+}
 .input-container {
     display: flex;
 }
@@ -37,4 +38,15 @@ iframe {
     overflow-x: hidden;
     overflow-y: scroll;
     z-index: 100;
+}
+.form-container {
+    display: flex;
+}
+.form-container img {
+    height: 50px;
+    width: 150px;
+    margin-left: 0;
+    margin-right: 5%;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
