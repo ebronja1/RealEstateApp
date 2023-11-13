@@ -1,5 +1,6 @@
 Za validaciju je koristen W3C validator.
 Niti jedan html, niti css fajl nije imao gresaka(ni error ni warnings).
+Ni novi profil.html file nema gresaka(ni error ni warnings).
 Linkovi CSS i Html validatora:
 https://jigsaw.w3.org/css-validator/?fbclid=IwAR168qRXT_qm_KMov7LKEBofR-5yflZ3SWZjF484wM2s4xIywY9tEzNa3mM#validate_by_input
 https://validator.w3.org/?fbclid=IwAR3Bcz1yKySM08ufVRwWkzG4xNGaRP2ATWi0JKc6oc_lHfHXz5z8IXKKbJ0
