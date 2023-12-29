@@ -1,4 +1,0 @@
-Koristio sam @media da bih prikazao form container kao kolonu do 500px,pomocu flex-direction: column;
-Mislio sam da moram podesavati da bude row kada sirina predje 500px, ali primjetio sam da radi i bez toga.
-Dovoljno je bilo izbrisati flex-direction: column; za sirinu preko 500px.
-Svakako,smanjio sam i desnu marginu slike za preko 500px, kako ne bi bila previse udaljena.
