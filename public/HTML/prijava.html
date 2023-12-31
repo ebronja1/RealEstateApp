@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../CSS/prijava.css" /> 
     <title>Prijava</title>
 </head>
 <body>
     
+    
+    <iframe src="meni.html" name="iframe_a" title="profil"></iframe><br>
+    <br>
     <h1>Prijava</h1>
-
-    <form action="/login" method="POST">
+    <form id="loginForm" action="/login" method="POST">
         <label for="username">Korisničko ime:</label>
         <input type="text" id="username" name="username" required>
 
@@ -18,5 +21,6 @@
 
         <button type="submit">Prijava</button>
     </form>
-</body>
+    <script src="../scripts/PoziviAjax.js"></script>
+    <script src="../scripts/prijava.js"></script>
 </html>
