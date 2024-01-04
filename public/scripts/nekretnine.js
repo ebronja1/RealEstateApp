@@ -17,11 +17,16 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
                 <p>Kvadratura:</p>
                 <p>${item.kvadratura}</p>
                 <p>km^2</p>
+                <div id = "klikovi-idNekretnine">
+                </div>
             </div><br>
             <div class = "desniPodaci">
                 <p class = "paragrafiDesni">Cijena:</p>
                 <p class = "paragrafiDesni">${item.cijena}</p>
                 <p class = "paragrafiDesni">KM</p>
+                <div id = "pretrage-idNekretnine" class = "paragrafiDesni">
+                </div>
+            </div>
             </div><br>
             <button class = "dugme" type="button">Detalji</button>
         </div>`});
