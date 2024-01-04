@@ -1,7 +1,6 @@
 const express = require('express');
-const fs = require("fs");
 const router = express.Router();
-
+const fs = require('fs');
 
 const usersData = require('./data/korisnici.json');
 const propertiesData = require('./data/nekretnine.json');
@@ -84,7 +83,6 @@ router.post('/upit', isAuthenticated, (req, res) => {
   let tekst_upita = req.body.upiti[0].tekst_upita;
   console.log(nekretnina_id);
   console.log(tekst_upita);
-  const user = usersData.find((u) => u.username === req.session.username);
 
   // Read the content of nekretnine.json
   fs.readFile('./data/nekretnine.json', 'utf8', (err, data) => {
@@ -203,4 +201,88 @@ router.get('/nekretnine', (req, res) => {
   });
 });
 
+//ISPOD SU RUTE ZA 3. ZADATAK:
+
+
+// Ruta za praćenje filtriranja nekretnina
+router.post('/marketing/nekretnine', (req, res) => {
+  const { nizNekretnina } = req.body;
+
+  console.log('Filtrirane nekretnine:', nizNekretnina);
+  //
+  fs.readFile('./data/pretrage.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading pretrage.json:', err);
+      res.status(500).json({ greska: 'Internal server error' });
+      return;
+    }
+
+      // Parse the JSON data
+      const jsonData = JSON.parse(data);
+
+      // Find the property with the given ID
+      // Update "pretrage" values based on the IDs provided in the request body
+      jsonData.forEach((item) => {
+        if (nizNekretnina.includes(item.id)) {
+        item.pretrage += 1; // You can adjust this logic based on your requirements
+        }
+      });
+
+        // Convert the updated JSON data to a string
+      const updatedJson = JSON.stringify(jsonData, null, 2);
+      
+      // Write the updated data back to nekretnine.json
+      fs.writeFile('./data/pretrage.json', updatedJson, 'utf8', (err) => {
+        if (err) {
+          console.error('Error writing to pretrage.json:', err);
+          res.status(500).json({ greska: 'Internal server error' });
+        } else {
+          res.status(200).json({ poruka: 'Uspjesno azurirani podaci o pretragama' });
+        }
+      });
+    });
+});
+
+//Ruta za klikove
+router.post('/marketing/nekretnine/:id', (req, res) => {
+  const nekretninaId = req.params.id;
+
+  console.log('Kliknuta nekretnina sa id:', nekretninaId);
+  //
+  fs.readFile('./data/pretrage.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading pretrage.json:', err);
+      res.status(500).json({ greska: 'Internal server error' });
+      return;
+    }
+
+      // Parse the JSON data
+      const jsonData = JSON.parse(data);
+
+      // Find the property with the given ID
+      // Update "pretrage" values based on the IDs provided in the request body
+      jsonData.forEach((item) => {
+        if (item.id == nekretninaId ) {
+        item.klikovi += 1; // You can adjust this logic based on your requirements
+        }
+      });
+
+        // Convert the updated JSON data to a string
+      const updatedJson = JSON.stringify(jsonData, null, 2);
+      
+      // Write the updated data back to nekretnine.json
+      fs.writeFile('./data/pretrage.json', updatedJson, 'utf8', (err) => {
+        if (err) {
+          console.error('Error writing to pretrage.json:', err);
+          res.status(500).json({ greska: 'Internal server error' });
+        } else {
+          res.status(200).json({ poruka: 'Uspjesno azurirani podaci o klikovima' });
+        }
+      });
+    });
+});
+
+
+
+//export router
 module.exports = router;
