@@ -282,6 +282,38 @@ router.post('/marketing/nekretnine/:id', (req, res) => {
     });
 });
 
+//Ruta osvjezi
+// Ruta za praćenje filtriranja nekretnina
+router.post('/marketing/osvjezi', (req, res) => {
+  const { nizNekretnina } = req.body;
+
+  console.log('Filtrirane nekretnine:', nizNekretnina);
+  //
+  fs.readFile('./data/pretrage.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading pretrage.json:', err);
+      res.status(500).json({ greska: 'Internal server error' });
+      return;
+    }
+
+      // Parse the JSON data
+      const jsonData = JSON.parse(data);
+
+      // Find the property with the given ID
+      // Update "pretrage" values based on the IDs provided in the request body
+      if(nizNekretnina) {
+        jsonData.forEach((item) => {
+          if (nizNekretnina.includes(item.id)) {
+          item.pretrage += 1; // You can adjust this logic based on your requirements
+          }
+      });
+      }
+        // Convert the updated JSON data to a string
+      const updatedJson = JSON.stringify(jsonData, null, 2);
+              
+      res.status(200).json(updatedJson);
+    });
+});
 
 
 //export router
