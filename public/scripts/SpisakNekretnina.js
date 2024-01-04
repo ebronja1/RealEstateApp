@@ -14,8 +14,8 @@ let SpisakNekretnina = function () {
         var filtriranaListaNekretnina = listaNekretnina;
         if ('tip_nekretnine' in kriterij) {
            console.log("1"); 
-            let value1 = kriterij.tip_nekretnine
-            console.log("value1=" + value1);
+            let value1 = kriterij.tip_nekretnine;
+            console.log("value1=" ,value1);
             filtriranaListaNekretnina = filtriranaListaNekretnina.filter(value => value.tip_nekretnine === value1);
 
         }

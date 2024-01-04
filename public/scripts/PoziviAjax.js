@@ -77,7 +77,7 @@ const PoziviAjax = (() => {
                 if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // Parsing the JSON response
-                    var listaNekretnina = JSON.parse(xhr.responseText);
+                    /*var listaNekretnina = JSON.parse(xhr.responseText);
                     document.addEventListener('DOMContentLoaded', async function () {
                         // Calling a function to populate the HTML with the fetched data
                         let nekretnine = SpisakNekretnina();
@@ -90,7 +90,7 @@ const PoziviAjax = (() => {
                         spojiNekretnine(divStan, nekretnine, "Stan");
                         spojiNekretnine(divKuca, nekretnine, "Kuća");
                         spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
-                      });
+                      });*/
 
                     //Calling callback
                     fnCallback(null, xhr.responseText);
