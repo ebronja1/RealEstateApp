@@ -285,7 +285,7 @@ router.post('/marketing/nekretnine/:id', (req, res) => {
 //Ruta osvjezi
 // Ruta za praćenje filtriranja nekretnina
 router.post('/marketing/osvjezi', (req, res) => {
-  const { nizNekretnina } = req.body;
+  const nizNekretnina = req.body.nizNekretnina;
 
   console.log('Filtrirane nekretnine:', nizNekretnina);
   //
@@ -297,16 +297,13 @@ router.post('/marketing/osvjezi', (req, res) => {
     }
 
       // Parse the JSON data
-      const jsonData = JSON.parse(data);
+      let jsonData = JSON.parse(data);
 
       // Find the property with the given ID
       // Update "pretrage" values based on the IDs provided in the request body
       if(nizNekretnina) {
-        jsonData.forEach((item) => {
-          if (nizNekretnina.includes(item.id)) {
-          item.pretrage += 1; // You can adjust this logic based on your requirements
-          }
-      });
+        // Use the filter method to filter the original array
+        jsonData = jsonData.filter(item => nizNekretnina.includes(item.id));
       }
         // Convert the updated JSON data to a string
       const updatedJson = JSON.stringify(jsonData, null, 2);
