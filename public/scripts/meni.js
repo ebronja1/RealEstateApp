@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function loggedInDisplay (param) {
        //get html data
        const nekretnineLink = document.querySelector('a[href="nekretnine.html"]');
-       const detaljiLink = document.querySelector('a[href="detalji.html"]');
        const prijavaLink = document.querySelector('a[href="prijava.html"]');
        const profilLink = document.querySelector('a[href="profil.html"]');
        const odjavaLink = document.querySelector('#odjavaLink');
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
         //Display parts of menu if logged in    
         prijavaLink.style.display = 'none'; // Show "Prijava"
         nekretnineLink.style.display = 'inline-block'; // Show "Nekretnine"
-        detaljiLink.style.display = 'inline-block'; // Show "Detalji"
         profilLink.style.display = 'inline-block'; // Hide "Profil"
         odjavaLink.style.display = 'inline-block'; // Hide "Odjava"
       }
@@ -54,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
         //Display parts of menu if not logged in
         prijavaLink.style.display = 'inline-block'; // Show "Prijava"
         nekretnineLink.style.display = 'inline-block'; // Show "Nekretnine"
-        detaljiLink.style.display = 'inline-block'; // Show "Detalji"
         profilLink.style.display = 'none'; 
         odjavaLink.style.display = 'none'; 
       }

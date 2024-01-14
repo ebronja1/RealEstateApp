@@ -12,45 +12,32 @@
     <h3>OSNOVNO</h3>
     <div id = "osnovno">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/%C5%BDupni_stan_Vuka.jpg" alt=""><br>
-        <p class = "paragLijevi">Naziv:</p>
-        <p>Stan na Svrakinom</p><br>
-        <p class = "paragLijevi">Kvadratura:</p>
-        <p>100 m^2</p><br>
-        <p class = "paragLijevi">Cijena:</p>
-        <p>380 000 KM</p><br>
+        <p id = "naziv" class = "paragLijevi"></p><br>
+        <p id = "kvadratura" class="paragLijevi"></p><br>
+        <p id = "cijena" class = "paragLijevi"></p><br>
     </div>
     <h3>DETALJI</h3>
     <div id="detalji">
         <table>
             <tr>
               <td>
-                <p class = "paragLijevi">Tip grijanja:</p>
-                <p>plin</p>
+                <p id = "tipGrijanja" class = "paragLijevi"></p>
             </td>
               <td>
-                <p class = "paragLijevi">Godina izgradnje:</p>
-                <p>2019</p>
+                <p id = "godinaIzgradnje" class = "paragLijevi"></p>
               </td>
             </tr>
             <tr>
                 <td>
-                    <p class = "paragLijevi">Lokacija:</p>
-                    <p>Novo Sarajevo</p>
+                    <p id = "lokacija" class = "paragLijevi"></p>
                 </td>
               <td>
-                <p class = "paragLijevi">Datum objave:</p>
-                <p>01.10.2023.</p>
+                <p id = "datumObjave" class = "paragLijevi"></p>
               </td>
             </tr>
             <tr>
                 <td colspan="2">
-                        <p class = "paragLijevi">Opis:</p>
-                        <p>Lorem Ipsum is simply dummy text of the printing
-                            and typesetting industry. Lorem Ipsum has been the indus
-                            try's standard dummy text ever since the 1500s, when an un
-                            known printer took a galley of type and scrambled it to 
-                            fo electronic typesetting, remaining essentially.
-                        </p>
+                        <p id = "opis" class = "paragLijevi"></p>
                 </td>
             </tr>
           </table>
@@ -76,5 +63,8 @@
             </li>
         </ul>
     </div>
+    <script src="../scripts/PoziviAjax.js"></script>
+    <script src="../scripts/SpisakNekretnina.js"></script>
+    <script src="../scripts/spojiDetalje.js"></script>
 </body>
 </html>

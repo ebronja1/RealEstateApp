@@ -76,23 +76,6 @@ const PoziviAjax = (() => {
         xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // Parsing the JSON response
-                    /*var listaNekretnina = JSON.parse(xhr.responseText);
-                    document.addEventListener('DOMContentLoaded', async function () {
-                        // Calling a function to populate the HTML with the fetched data
-                        let nekretnine = SpisakNekretnina();
-                        nekretnine.init(listaNekretnina, null);
-                        const divStan = document.querySelector('#stan');
-                        const divKuca = document.querySelector('#kuca');
-                        const divPp = document.querySelector('#pp');
-
-                        //pozivanje funkcije
-                        spojiNekretnine(divStan, nekretnine, "Stan");
-                        spojiNekretnine(divKuca, nekretnine, "Kuća");
-                        spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
-                      });*/
-
-                    //Calling callback
                     fnCallback(null, xhr.responseText);
                 } else {
                     fnCallback(xhr.responseText, null);
@@ -169,6 +152,27 @@ const PoziviAjax = (() => {
         // Sending the request without a payload since it's a logout request
         xhr.send();
     }
+
+    function impl_getNekretninaById(nekretnina_id, fnCallback) {
+        var xhr = new XMLHttpRequest();
+        // Specifing the request type, URL, and whether it should be asynchronous
+        xhr.open("GET", `http://localhost:3000/nekretnina/${nekretnina_id}`, true);
+
+        // Set up the callback function to handle the response
+        xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    fnCallback(null, xhr.responseText);
+                } else {
+                    fnCallback(xhr.responseText, null);
+                }
+                }
+            };
+
+            // Send the request
+            xhr.send();
+    }
+
   
     return {
         postLogin: impl_postLogin,
@@ -176,7 +180,8 @@ const PoziviAjax = (() => {
         getKorisnik: impl_getKorisnik,
         putKorisnik: impl_putKorisnik,
         postUpit: impl_postUpit,
-        getNekretnine: impl_getNekretnine
+        getNekretnine: impl_getNekretnine,
+        getNekretninaById: impl_getNekretninaById
     };
 })();
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const db = require('./db.js');
 
 const usersData = require('./data/korisnici.json');
 const propertiesData = require('./data/nekretnine.json');
@@ -28,31 +29,30 @@ bcrypt.hash(plainTextPassword, 10, function(err, hash) {
 */
 
 // Route: /login
-router.post('/login', function(req,res){
+router.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  fs.readFile('./data/korisnici.json', 'utf8',async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
-      try {
-        const korisnici = JSON.parse(data);        
-        var userFound = korisnici.find(korisnik => korisnik.username == username);
-        var validPassword = false;
-        if(userFound)
-        validPassword = await bcrypt.compare(password,userFound.password);
-          if(validPassword){
-              req.session.username = username;
-              res.status(200);
-              res.json({poruka:"Uspješna prijava"});
-          }
-          else {
-              res.status(401).json({poruka:"Neuspješna prijava"})
-          }
-      } catch (error) {
-        console.error('Error parsing JSON data: ', error);
+
+  try {
+    // Find the user in the database
+    const userFound = await db.korisnik.findOne({ where: { username } });
+
+    if (userFound) {
+      // Compare passwords using bcrypt
+      const validPassword = await bcrypt.compare(password, userFound.password);
+
+      if (validPassword) {
+        req.session.username = username;
+        res.status(200).json({ poruka: 'Uspješna prijava' });
+      } else {
+        res.status(401).json({ poruka: 'Neuspješna prijava' });
       }
-    });
+    } else {
+      res.status(401).json({ poruka: 'Neuspješna prijava' });
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ poruka: 'Internal Server Error' });
+  }
 });
 
 // Route: /logout
@@ -62,143 +62,108 @@ router.post('/logout', isAuthenticated, (req, res) => {
 });
 
 // Route: /korisnik
-router.get('/korisnik', isAuthenticated, (req, res) => {
+router.get('/korisnik', isAuthenticated, async (req, res) => {
   const username = req.session.username;
-  const user = usersData.find((u) => u.username === username);
 
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(401).json({ greska: 'Neautorizovan pristup' });
+  try {
+    // Find the user in the database
+    const user = await db.korisnik.findOne({ where: { username } });
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(401).json({ greska: 'Neautorizovan pristup' });
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ poruka: 'Internal Server Error' });
   }
 });
 
 // Route: /upit
-router.post('/upit', isAuthenticated, (req, res) => {
+router.post('/upit', isAuthenticated, async (req, res) => {
   // Check if user is authenticated
   if (!req.session.username) {
     return res.status(401).json({ greska: 'Neautorizovan pristup' });
   }
-  let nekretnina_id = req.body.id;
-  let tekst_upita = req.body.upiti[0].tekst_upita;
-  console.log(nekretnina_id);
-  console.log(tekst_upita);
 
-  // Read the content of nekretnine.json
-  fs.readFile('./data/nekretnine.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading nekretnine.json:', err);
-      res.status(500).json({ greska: 'Internal server error' });
-      return;
-    }
+  const nekretninaId = req.body.nekretnina_id;
+  const tekstUpita = req.body.tekst_upita;
 
-    try {
-      // Parse the JSON data
-      const jsonData = JSON.parse(data);
+  try {
+    // Find the property with the given ID in the database
+    const nekretnina = await db.nekretnina.findByPk(nekretninaId);
 
-      // Find the property with the given ID
-      const property = jsonData.find((p) => p.id === nekretnina_id);
-
-      if (!property) {
-        res.status(400).json({ greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji` });
-      } else {
-        // Add the new data to the property
-        property.upiti.push({ korisnik_id: user.id, tekst_upita });
-
-        // Convert the updated JSON data to a string
-        const updatedJson = JSON.stringify(jsonData, null, 2);
-
-        // Write the updated data back to nekretnine.json
-        fs.writeFile('./data/nekretnine.json', updatedJson, 'utf8', (err) => {
-          if (err) {
-            console.error('Error writing to nekretnine.json:', err);
-            res.status(500).json({ greska: 'Internal server error' });
-          } else {
-            res.status(200).json({ poruka: 'Upit je uspješno dodan' });
-          }
-        });
+    if (!nekretnina) {
+      res.status(400).json({ greska: `Nekretnina sa id-em ${nekretninaId} ne postoji` });
+    } else {
+      // Assuming there's an Upit model and an association between Nekretnina and Upit
+      const user = await db.korisnik.findOne({ where: { username: req.session.username } });
+      if (!user) {
+        return res.status(401).json({ greska: 'Korisnik nije pronađen' });
       }
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      res.status(500).json({ greska: 'Internal server error' });
+
+      const upit = await db.upit.create({
+        korisnik_id: user.id,
+        tekst_upita: tekstUpita,
+        nekretnina_id: nekretnina.id
+      });
+
+      res.status(200).json({ poruka: 'Upit je uspješno dodan', upit });
     }
-  });
+  } catch (error) {
+    console.error('Error processing upit:', error);
+    res.status(500).json({ greska: 'Internal server error' });
+  }
 });
 
 // Route: /korisnik
-router.put('/korisnik', isAuthenticated, (req, res) => {
+router.put('/korisnik', isAuthenticated, async (req, res) => {
   const { id, ime, prezime, username, password } = req.body;
+
   if (!req.session.username) {
     return res.status(401).json({ greska: 'Neautorizovan pristup' });
   }
 
-    // Read the content of korisnici.json
-    fs.readFile('./data/korisnici.json', 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error reading korisnici.json:', err);
-        res.status(500).json({ greska: 'Internal server error' });
-        return;
-      }
+  try {
+    // Find the user who is logged in based on the session username
+    const loggedInUser = await db.korisnik.findOne({ where: { username: req.session.username } });
 
-      try {
-        // Parse the JSON data
-        const jsonData = JSON.parse(data);
-        
-        //Find user who is logged in
-        let loggedInUser = jsonData.find((u) => u.username === req.session.username);
-        const userIndex = jsonData.findIndex((u) => u.id === loggedInUser.id);
+    if (!loggedInUser) {
+      return res.status(404).json({ greska: 'Korisnik nije pronađen' });
+    }
 
-        if (id) loggedInUser.id = id;
-        if (ime) loggedInUser.ime = ime;
-        if (prezime) loggedInUser.prezime = prezime;
-        if (username) loggedInUser.username = username;
-        if (password) loggedInUser.password = password;
+    // Update user attributes if provided
+    if (id) loggedInUser.id = id;
+    if (ime) loggedInUser.ime = ime;
+    if (prezime) loggedInUser.prezime = prezime;
+    if (username) loggedInUser.username = username;
+    if (password) {
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(password, 10);
+      loggedInUser.password = hashedPassword;
+    }
 
-        if (userIndex !== -1) {
+    // Save the updated user to the database
+    await loggedInUser.save();
 
-          bcrypt.hash(password, 10, function(err, hash) {
-            // hash šifre imate ovdje
-             if (err) {
-              console.log('err');
-             }
-             console.log(hash);
-             loggedInUser.password = hash;
-              // Update the user in the array
-              jsonData[userIndex] = loggedInUser;
-              // Write the updated data back to korisnici.json
-              const updatedJson = JSON.stringify(jsonData, null, 2);
-              fs.writeFile('./data/korisnici.json', updatedJson, 'utf8', (err) => {
-
-                if (err) {
-                  console.error('Error writing to korisnici.json:', err);
-                  res.status(500).json({ greska: 'Internal server error' });
-                } else {
-                  res.status(200).json({ poruka: 'Podaci su uspješno ažurirani' });
-                }
-              });
-            });
-            
-            
-        } else {
-          res.status(404).json({ greska: 'Korisnik nije pronađen' });
-        }
-      } catch (parseError) {
-        console.error('Error parsing JSON:', parseError);
-        res.status(500).json({ greska: 'Internal server error' });
-      }
-    });
+    res.status(200).json({ poruka: 'Podaci su uspješno ažurirani' });
+  } catch (error) {
+    console.error('Error updating user data:', error);
+    res.status(500).json({ greska: 'Internal server error' });
+  }
 });
-
 // Route: /nekretnine
-router.get('/nekretnine', (req, res) => {
-  fs.readFile('./data/nekretnine.json', 'utf8',async (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }   
-    const nekretnine = JSON.parse(data);        
+router.get('/nekretnine', async (req, res) => {
+  try {
+    // Fetch all nekretnine from the database
+    const nekretnine = await db.nekretnina.findAll();
+
     res.status(200).json(nekretnine);
-  });
+  } catch (error) {
+    console.error('Error fetching nekretnine from the database:', error);
+    res.status(500).json({ greska: 'Internal server error' });
+  }
 });
 
 //ISPOD SU RUTE ZA 3. ZADATAK:
@@ -310,6 +275,28 @@ router.post('/marketing/osvjezi', (req, res) => {
               
       res.status(200).json(updatedJson);
     });
+});
+
+
+//RUTA SA SPIRALE 4
+//Ruta za dobavljanje jedne nekrentine
+router.get('/nekretnina/:id', async (req, res) => {
+  const nekretninaId = req.params.id;
+
+  try {
+    // Find the nekretnina by ID in the database
+    const nekretnina = await db.nekretnina.findByPk(nekretninaId);
+
+    if (!nekretnina) {
+      return res.status(400).json({ greska: `Nekretnina sa id-em ${nekretninaId} ne postoji` });
+    }
+
+    // If nekretnina is found, return its data in JSON format
+    res.status(200).json(nekretnina);
+  } catch (error) {
+    console.error('Error fetching nekretnina from the database:', error);
+    res.status(500).json({ greska: 'Internal server error' });
+  }
 });
 
 
