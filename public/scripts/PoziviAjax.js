@@ -157,7 +157,6 @@ const PoziviAjax = (() => {
         var xhr = new XMLHttpRequest();
         // Specifing the request type, URL, and whether it should be asynchronous
         xhr.open("GET", `http://localhost:3000/nekretnina/${nekretnina_id}`, true);
-
         // Set up the callback function to handle the response
         xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {

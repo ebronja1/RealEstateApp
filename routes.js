@@ -285,14 +285,25 @@ router.get('/nekretnina/:id', async (req, res) => {
 
   try {
     // Find the nekretnina by ID in the database
-    const nekretnina = await db.nekretnina.findByPk(nekretninaId);
-
-    if (!nekretnina) {
+    //var nekretnina = await db.nekretnina.findByPk(nekretninaId);
+    const nekretninaWithUpiti = await db.nekretnina.findByPk(nekretninaId, {
+      include: [
+        {
+          model: db.upit,
+          as: 'upiti',
+          include: {
+            model: db.korisnik, // Assuming the model for korisnik is db.korisnik
+            as: 'korisnik',
+          },
+        },
+      ],
+    });
+    if (!nekretninaWithUpiti) {
       return res.status(400).json({ greska: `Nekretnina sa id-em ${nekretninaId} ne postoji` });
     }
 
     // If nekretnina is found, return its data in JSON format
-    res.status(200).json(nekretnina);
+    res.status(200).json(nekretninaWithUpiti);
   } catch (error) {
     console.error('Error fetching nekretnina from the database:', error);
     res.status(500).json({ greska: 'Internal server error' });

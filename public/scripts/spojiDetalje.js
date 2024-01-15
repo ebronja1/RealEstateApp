@@ -25,12 +25,33 @@ document.addEventListener('DOMContentLoaded', async function () {
           document.querySelector('#datumObjave').textContent = `Datum Objave: ${nekretnina1.datum_objave}`;
           document.querySelector('#opis').textContent = `Opis: ${nekretnina1.opis}`;
   
-          // Add event listener for the "Otvori detalje" button
-          const otvoriDetaljeButton = document.querySelector('.dugme-otvori');
-          otvoriDetaljeButton.addEventListener('click', () => {
-            // Redirect to detalji.html with the same nekretninaId
-            window.location.href = `detalji.html?id=${nekretninaId}`;
-          });
+          const upitiForNekretnina = nekretnina1.upiti;
+          console.log('upiti', upitiForNekretnina);
+          // Get the ul element where you want to append li items
+          const upitiUl = document.querySelector('#listaUpita');
+
+          // Loop through the upiti array
+          for (const upit of upitiForNekretnina) {
+            // Create a new li element
+            const liElement = document.createElement('li');
+
+            // Create nested elements for username and text
+            const usernameElement = document.createElement('p');
+            usernameElement.classList.add('naslovcic');
+            usernameElement.textContent = upit.korisnik.username;
+
+            const textElement = document.createElement('p');
+            const brElement = document.createElement('br');
+            textElement.textContent = upit.tekst_upita;
+
+            // Append nested elements to the li element
+            liElement.appendChild(usernameElement);
+            liElement.appendChild(brElement);
+            liElement.appendChild(textElement);
+
+            // Append the li element to the ul
+            upitiUl.appendChild(liElement);
+            }
         }
       });
     }
