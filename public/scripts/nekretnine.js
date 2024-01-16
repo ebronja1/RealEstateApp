@@ -28,9 +28,9 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
                 </div>
             </div>
             <div class = "lokacija"></div>
-            <div class = "godinaIzgradnje"></div>
-            </div><br>
+            <div class = "godinaIzgradnje"></div><br>
             <button nekretninaId=${item.id} class = "dugme-detalji" type="button">Detalji</button>
+            </div><br>
         </div>`});
     // iscrtavanje elemenata u divReferenca element
 

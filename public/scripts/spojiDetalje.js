@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           const upitiForNekretnina = nekretnina1.upiti;
           console.log('upiti', upitiForNekretnina);
           // Get the ul element where you want to append li items
-          const upitiUl = document.querySelector('#listaUpita');
+          var upitiUl = document.querySelector('#listaUpita');
 
           // Loop through the upiti array
           for (const upit of upitiForNekretnina) {
@@ -51,8 +51,36 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Append the li element to the ul
             upitiUl.appendChild(liElement);
-            }
-        }
-      });
-    }
-  });
+          }
+            
+            //Za loginovanog korisnika prikaz polja za dodavanje upita
+            PoziviAjax.getKorisnik(function (err, data) {
+                if (err) {
+                  console.log(err);
+                } else {
+                    console.log('Code is reaching this point.'); // Add this line for debugging
+                    var divZaUpit = document.querySelector('#dodajUpitForma');
+                    console.log('divZaUpit', divZaUpit.style.display = "block");
+                    divZaUpit.style.display = "block";
+
+                  var dugmeZaPotvrdu = document.querySelector('#dodajUpit');
+                  dugmeZaPotvrdu.addEventListener('click', function () {
+                    var tekstPolje = document.querySelector('#upitInputField');
+                    var uneseniTekst = tekstPolje.value; 
+                    PoziviAjax.postUpit(nekretnina1.id, uneseniTekst, function (err, data) {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        tekstPolje.value = '';
+                        location.reload();
+                      }
+                    });
+                  });
+
+              }
+                   
+        });
+      }
+    });
+  }
+});
