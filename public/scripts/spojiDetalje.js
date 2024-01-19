@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           }
             
             //Za loginovanog korisnika prikaz polja za dodavanje upita
-            PoziviAjax.getKorisnik(function (err, data) {
+            /*PoziviAjax.getKorisnik(function (err, data) {
                 if (err) {
                   console.log(err);
                 } else {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
               }
                    
-        });
+        });*/
       }
     });
   }
